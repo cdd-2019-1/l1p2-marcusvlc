@@ -1,5 +1,5 @@
 ---
-title: "REPLACE ME"
+title: "Laboratório 1 Parte 2, Marcus Vinicius"
 output:
     html_document:
     df_print: paged
@@ -28,6 +28,7 @@ camara_paraibana %>% ggplot(aes(x=nome_eleitoral, y=engaj_total_proprio)) +
 
 
 ```
+
 Com isso, podemos visualizar que o deputado mais ativo em questão de postagens próprias é o deputado Pedro Cunha Lima, enquanto o menos ativo é o deputado Wilson Santiago.
 
 
@@ -43,6 +44,7 @@ usuarios_twitter %>% ggplot(aes(x = nome_eleitoral, y = engaj_total_retweet)) +
   theme(axis.text.x = element_text(angle = 90))
 
 ```
+
 Ao plotar um gráfico de pontos, nós podemos perceber que o parlamentar que mais repassou informação chegou a realizar mais de 1 milhão de retweets, e o top 5 varia até cerca de 600 mil.
 
 
