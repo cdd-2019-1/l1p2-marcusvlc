@@ -14,4 +14,76 @@ theme_set(theme_bw())
 
 ```{r read}
 atividade = read_projectdata()
+
 ```
+## Quem são os deputados paraibanos mais ativos no twitter (em questão de postagens próprias)?
+
+```{r}
+
+camara_paraibana = atividade %>% filter(!is.na(seguidores), casa == "câmara", UF == "PB")
+
+camara_paraibana %>% ggplot(aes(x=nome_eleitoral, y=engaj_total_proprio)) +
+  geom_bar(stat="identity")
+
+
+
+```
+Com isso, podemos visualizar que o deputado mais ativo em questão de postagens próprias é o deputado Pedro Cunha Lima, enquanto o menos ativo é o deputado Wilson Santiago.
+
+
+## Quais sao os 5 parlamentares que mais repassam postagens adiante (retweets)?
+
+```{r}
+
+usuarios_twitter = atividade %>% filter(!is.na(seguidores)) %>% arrange(desc(engaj_total_retweet)) %>% head(4)
+
+
+usuarios_twitter %>% ggplot(aes(x = nome_eleitoral, y = engaj_total_retweet)) +
+  geom_point(shape=23, fill="blue", color="darkred", size=3) + scale_x_discrete(name ="Nome dos parlamentares") + 
+  theme(axis.text.x = element_text(angle = 90))
+
+```
+Ao plotar um gráfico de pontos, nós podemos perceber que o parlamentar que mais repassou informação chegou a realizar mais de 1 milhão de retweets, e o top 5 varia até cerca de 600 mil.
+
+
+## Quem são os 10 deputados mais populares (que possuem mais seguidores)?
+
+```{r}
+
+populares = atividade %>% filter(!is.na(seguidores), casa == "câmara") %>% arrange(desc(seguidores)) %>% head(10)
+
+populares %>% ggplot(aes(x = stringr::str_wrap(nome_eleitoral, 1), y = seguidores)) + 
+  geom_bar(stat = "identity", width=0.4) + scale_x_discrete(name ="Nome dos deputados")
+
+
+```
+
+Na visualização acima podemos observar quem são os 10 deputados com maior número de seguidores, sendo Marcelo Freixo, o deputado mais popular.
+
+
+## Proporcionalmente, quem possui mais utilizadores do twitter? Câmara ou Senado?
+
+```{r}
+  
+utilizadores_camara = nrow(atividade %>% filter(!is.na(seguidores), casa == "câmara"))
+
+utilizadores_senado = nrow(atividade %>% filter(!is.na(seguidores), casa == "senado"))
+
+total_camara = nrow(atividade %>% filter(casa == "câmara"))
+
+total_senado = nrow(atividade %>% filter(casa == "senado"))
+  
+proporcao_camara = utilizadores_camara / total_camara
+
+proporcao_senado = utilizadores_senado / total_senado
+
+vetor_grafico = c(proporcao_camara, proporcao_senado)
+rotulos = c("Câmara", "Senado")
+
+data.frame(vetor_grafico, rotulos) %>% ggplot(aes(x = rotulos, y = vetor_grafico)) + geom_bar(stat = "identity")
+
+
+```
+
+Com essa visualização, nós podemos perceber que, proporcionalmente, o senado tem mais usuários do twitter se comparado com a câmara, superando a margem de 90 por cento de utilizadores.
+
