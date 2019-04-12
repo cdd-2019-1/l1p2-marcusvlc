@@ -82,10 +82,17 @@ proporcao_senado = utilizadores_senado / total_senado
 vetor_grafico = c(proporcao_camara, proporcao_senado)
 rotulos = c("Câmara", "Senado")
 
-data.frame(vetor_grafico, rotulos) %>% ggplot(aes(x = rotulos, y = vetor_grafico)) + geom_bar(stat = "identity")
+data.frame(vetor_grafico, rotulos) %>% ggplot(aes(x = rotulos, y = vetor_grafico)) + geom_bar(stat = "identity", fill=c("#DC143C", "#6A5ACD"), col="black") + labs(x = "Casas", y = "Pessoas que usam twitter (%)", title = "Visualização dos parlamentares que usam twitter em cada casa \n (Proporcionalmente)") + theme(plot.title = element_text(hjust = 0.5)) + scale_y_continuous(limits = c(0,1.1))
 
 
 ```
 
 Com essa visualização, nós podemos perceber que, proporcionalmente, o senado tem mais usuários do twitter se comparado com a câmara, superando a margem de 90 por cento de utilizadores.
+
+```{r}
+
+casas_tt = atividade %>% filter(!is.na(seguidores), engaj_total_proprio > 10)
+
+```
+
 
