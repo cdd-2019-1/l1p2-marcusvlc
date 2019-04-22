@@ -1,0 +1,69 @@
+---
+title: "Laboratório 1 Parte 4, Marcus Vinicius"
+output:
+    html_document:
+    df_print: paged
+theme: sandstone
+---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)
+source(here::here("code/lib.R"))
+library(ISwR)
+theme_set(theme_bw())
+```
+
+```{r read}
+atividade = read_projectdata()
+```
+
+## Existe relação entre a postagem própria mais popular de um parlamentar com seu retweet mais popular?
+
+```{r}
+
+atividade %>% filter(!is.na(seguidores)) %>%
+  ggplot(aes(x = engaj_max, y = engaj_max_retweet)) +
+  geom_point() + scale_x_log10() +
+  scale_y_log10() 
+
+```
+
+Ao plotar o gráfico de pontos de ambas as variáveis, podemos perceber que existe uma forte correlação entre elas, muito pelo fato de, o engajamento ser uma variável que evidencia a soma de likes + retweets de uma postagem, e é de se esperar que, para o mesmo parlamentar, o engajamento máximo próprio, ou seja, a postagem mais "famosa" daquele parlamentar esteja associada ao engajamento máximo para um retweet, que nada mais é que o retweet mais "famoso" daquele parlamentar. Essa associação é dedutível pois ambas as postagens abrangem o mesmo público alvo, os seguidores daquele parlamentar, logo, espera-se que seus tweets/retweets mais famosos estejam no mesmo limiar de popularidade.
+
+```{r}
+cor_engaj_max = atividade %>% filter(!is.na(seguidores)) %>% pull(engaj_max )
+cor_engaj_max_retweet = atividade %>% filter(!is.na(seguidores)) %>% pull(engaj_max_retweet)
+
+cor(cor_engaj_max, cor_engaj_max_retweet)
+
+```
+Usando a função cor, que retorna a correlação entre duas variáveis, podemos evidenciar que ambas possuem uma alta correlação entre si.
+
+
+## O número de seguidores de um parlamentar está associado a quantas pessoas ele segue?
+
+
+```{r}
+atividade %>% filter(!is.na(seguidores)) %>%
+  ggplot(aes(x = seguidores, y = segue)) +
+  geom_point()  + scale_x_log10() +
+  scale_y_log10() 
+
+
+```
+
+Ao plotar o gráfico de pontos de ambas as variáveis, fica nítido que elas possuem uma correlação extremamente baixa (os pontos estão bastante dispersos). Esse resultado é esperado, já que, é usual os parlamentares possuirem bastante seguidores mas não se preocuparem em seguir outros perfis.
+
+```{r}
+cor_seguidores = atividade %>% filter(!is.na(seguidores)) %>% pull(seguidores)
+cor_segue = atividade %>% filter(!is.na(seguidores)) %>% pull(segue)
+
+cor(cor_seguidores, cor_segue)
+
+
+```
+Ao utilizar a função que retorna a correlação entre elas, podemos concluir que sua correlação é bastante fraca, beirando a não existência.
+
+
+
+
